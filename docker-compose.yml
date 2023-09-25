@@ -1,22 +1,67 @@
 version: '3'
-services:
-  postgres:
-    image: postgres:latest
-    environment:
-      POSTGRES_DB: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
 
+services:
   scraper:
+    image: python:3.8
     build:
       context: .
       dockerfile: Dockerfile
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_HOST: postgres
+    network_mode: bridge
+    command: python scraper.py
+    restart: always
+
+
+
+  postgres:
+  
+    image: postgres:13
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    restart: always
+    network_mode: bridge
+    expose:
+      - "5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_HOST: postgres
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    command: python postgres.py
+    depends_on:
+      - scraper
+
+
+  web:
+    image: python:3.8
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_HOST: postgres
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+    network_mode: bridge
+    command: python3 server.py runserver 0.0.0.0:8000
+    ports:
+      - "8080:8080"
     depends_on:
       - postgres
+    restart: always
 
-volumes:
-  postgres_data:
+
+    

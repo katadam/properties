@@ -27,3 +27,5 @@ to_write = df[['name', '_links.image_middle2']].rename(columns={'_links.image_mi
 to_write.index = to_write.index + 1
 to_write = to_write.reset_index()
 to_write['photo'] = [x[0]['href'] for x in to_write['photo']]
+
+

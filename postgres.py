@@ -4,9 +4,12 @@ from sqlalchemy import create_engine
 from scraper import to_write
 
 # postgres table creation
-conn_string = 'postgresql://postgres:postgres@localhost:5432/postgres'
 
-conn = psycopg2.connect(conn_string)
+# use this to run locally using python3 server.py
+#conn_string = 'postgresql://postgres:postgres@localhost:5432/postgres'
+
+
+conn = psycopg2.connect(database = 'postgres', user = 'postgres', password = 'postgres', host = 'postgres')
 cursor = conn.cursor()
   
 table_schema = """

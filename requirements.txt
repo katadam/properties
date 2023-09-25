@@ -1,6 +1,7 @@
-scrapy==2.5.1
+scrapy
 pandas==1.3.3
 psycopg2-binary==2.9.1
 SQLAlchemy==1.4.25
 cryptography==38.0.4
 pyopenssl==22.0.0
+Twisted==22.10.0
