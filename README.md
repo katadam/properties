@@ -8,3 +8,8 @@ pip install -r requirements.txt
 python3 sever.py
 ```
 
+Alternatively, you can use a docker environment:
+```console
+sudo docker-compose build
+sudo docker-compose up
+```
